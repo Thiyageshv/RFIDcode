@@ -22,3 +22,9 @@ python clientslower.py
 Access the mobile webiste at http://ip address of server:8000/exit/ 
 If you ahve the required hardware, follow the correct pin diagrams for the wifi shield and the RFC522 shield using information in  http://www.instructables.com/id/WiFi-RFID-Reader/ or https://www.addicore.com/v/vspfiles/downloadables/Product%20Downloadables/RFID_RC522/RFIDQuickStartGuide.pdf
 
+For more information regarding the project setup follow 
+1. https://www.youtube.com/watch?v=ADa_hrrYCs0 (Hardware explanation)
+2. https://www.youtube.com/watch?v=6BJ7B6ySxgA (Software explanation)
+3. https://www.youtube.com/watch?v=myyGI2jcHtA (Porject demonstation)
+
+
