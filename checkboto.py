@@ -1,8 +1,8 @@
 import boto.dynamodb
 conn = boto.dynamodb.connect_to_region(
         'us-west-2',
-        aws_access_key_id='AKIAIEMNGBBNHEB7XYDQ',
-        aws_secret_access_key='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')
+        aws_access_key_id='',
+        aws_secret_access_key='')
 
 print conn.list_tables()
 
