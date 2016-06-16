@@ -4,9 +4,9 @@ import time
 from threading import Thread
 from SocketServer import ThreadingMixIn
 global timer 
-message = 'hello'
+message = 'lower'
 server_address = ('localhost', 10003)
-rfid_address = ('localhost', 20001)
+rfid_address = ('localhost', 20000)
 host =''
 port=20000
 threads = []
@@ -52,19 +52,21 @@ class datathread(Thread):
             try:
                 s2.send("hello")
             except:
+                #print "error"
                 continue 
             break 
-        retrycount = 0     
-        while retrycount <= 3:
+        retrycount = 0    
+        while retrycount <=3:
             try:
                 rfiddata = s2.recv(1024)
             except:
                 time.sleep(3.0)
-                retrycount += 1
+                retrycount += 1 
                 continue 
             print rfiddata
-            rfiddata = "rfid upper" + "-" + rfiddata
+            rfiddata = "rfid lower" + "-" + rfiddata
             s.send(rfiddata) #rfiddata is now sent to centralized server
+        s2.close()
         
 
 
@@ -77,7 +79,7 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # Connect the socket to the port where the server is listening
 print >>sys.stderr, 'connecting to %s port %s' % server_address
 s.connect(server_address)
-s.settimeout(30)	
+s.settimeout(10)	
 
 print >>sys.stderr, '%s: sending "%s"' % (s.getsockname(), message)
 while True:

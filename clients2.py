@@ -1,10 +1,11 @@
 import socket
 import sys
+import time 
 from threading import Thread
 from SocketServer import ThreadingMixIn
 global timer 
 message = 'hello'
-server_address = ('localhost', 10008)
+server_address = ('localhost', 10003)
 rfid_address = ('localhost', 20001)
 host =''
 port=20000
@@ -46,21 +47,23 @@ class datathread(Thread):
             s2.connect(rfid_address)
         except socket.error, exc:
             print "Caught exception socket.error : %s" % exc
-        s2.settimeout(10)
+        s2.settimeout(30)
         while True:
             try:
                 s2.send("hello")
             except:
                 continue 
             break 
-            
-        while True:
+        retrycount = 0     
+        while retrycount <= 3:
             try:
                 rfiddata = s2.recv(1024)
             except:
+                time.sleep(3.0)
+                retrycount += 1
                 continue 
             print rfiddata
-            rfiddata = "rfid" + "-" + rfiddata
+            rfiddata = "rfid upper" + "-" + rfiddata
             s.send(rfiddata) #rfiddata is now sent to centralized server
         
 
@@ -73,8 +76,8 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
 # Connect the socket to the port where the server is listening
 print >>sys.stderr, 'connecting to %s port %s' % server_address
-print s.connect(server_address)
-s.settimeout(10)	
+s.connect(server_address)
+s.settimeout(30)	
 
 print >>sys.stderr, '%s: sending "%s"' % (s.getsockname(), message)
 while True:
@@ -85,9 +88,9 @@ while True:
         continue 
     break 
 print >>sys.stderr, '%s: received "%s"' % (s.getsockname(), data)
-if data != "ack":
+'''if data != "ack":
     print >>sys.stderr, 'closing socket', s.getsockname()
-    s.close()
+    s.close() '''
 
 print "get timer"
 gettimer = "timer"
@@ -107,5 +110,5 @@ threads.append(newthread2)
 for t in threads:
     t.join(600)
     
-s2.close()
+#s2.close()
        

@@ -13,13 +13,13 @@ rfiddata="214"
 dataqueue.append(rfiddata) #at any instance dataqueue contains list of rfid readings that are yet to be sent to the client.py. If client.py has to restart then readings that failed are successfully stored in the queue  
 #server_address = ('localhost', 20000)
 host = ''
-port=20001
+port=20000
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #socket for getting rfid data from rfidpass.py
 server.bind((host,port))
 server.setblocking(0)
 server.listen(5) 
+finishflag = 0 
 input = [server, sys.stdin] 
-finishflag = 0
 while True:
     inputready,output,exceptions = select.select(input,[],[]) 
     for s in inputready: 
@@ -44,21 +44,24 @@ while True:
                 sendcount=0
                 while sendcount < 3:
                     try:
-                        print "upper tag send"
+                        time.sleep(10.0)
+                        print "lower tag send"
                         data = s.send(i)
-                        time.sleep(18.0)
-                        print "upper tag send"
+                        time.sleep(5.0)
+                        print "lower tag send"
                         data = s.send(i)
-                        time.sleep(15.0)
-                        print "upper tag send"
+                        time.sleep(20.0)
+                        print "lower tag send"
                         data = s.send("165")
                         time.sleep(15.0)
-                        print "upper tag send"
+                        print "lower tag send"
                         data = s.send("100")
+                        
+                        
                         
                     except socket.error, exc:
                         print "Caught exception socket.error : %s" % exc
-                        #print "error"
+                        print "error"
                         sendcount+=1
                         continue 
                     sentflag = 1
@@ -67,8 +70,7 @@ while True:
             if sentflag==1: #if data has been sent remove it from the queue 
                 print "Data sent"
                 if i not in dataqueue:
-                    dataqueue.remove(i) 
-    
+                    dataqueue.remove(i)
     for s in exceptions:
         print >>sys.stderr, 'handling exceptional condition for', s.getpeername()
         # Stop listening for input on the connection
